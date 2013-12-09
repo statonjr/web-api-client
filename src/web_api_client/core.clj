@@ -47,8 +47,15 @@
    links))
 
 (defn item-attr
-  "Takes a DOCument and returns the content of the ATTribute of the item in the DOCument"
-  [doc att]
+  "Takes an ATTribute and a DOCument. Returns the content of the ATTribute of the item in the DOCument"
+  [att doc]
   (-> (s/select (s/attr :itemprop #(.startsWith % att))
                 doc)
       first :content first))
+
+(defn actions
+  "Takes a DOCument. Returns a list of actions with which a client can interact."
+  [doc]
+  (map
+   #(get-in % [:attrs :data-rel])
+   (s/select (s/attr :data-rel) doc)))
